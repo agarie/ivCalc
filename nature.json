@@ -1,0 +1,102 @@
+{
+	hardy: {
+	increase: "none",
+	decrease: "none"
+	},
+	docile: {
+	increase: "none",
+	decrease: "none"
+	},
+	serious: {
+	increase: "none",
+	decrease: "none"
+	},
+	bashful: {
+	increase: "none",
+	decrease: "none"
+	},
+	quirky: {
+	increase: "none",
+	decrease: "none"
+	},
+	lonely: {
+	increase: "atk",
+	decrease: "def"
+	},
+	adamant: {
+	increase: "atk",
+	decrease: "spatk"
+	},
+	naughty: {
+	increase: "atk",
+	decrease: "spdef"
+	},
+	brave: {
+	increase: "atk",
+	decrease: "spd"
+	},
+	bold: {
+	increase: "def",
+	decrease: "atk"
+	},
+	impish: {
+	increase: "def",
+	decrease: "spatk"
+	},
+	lax: {
+	increase: "def",
+	decrease: "spdef"
+	},
+	relaxed: {
+	increase: "def",
+	decrease: "spd"
+	},
+	timid: {
+	increase: "spd",
+	decrease: "atk"
+	},
+	hasty {
+	increase: "spd",
+	decrease: "def"
+	},
+	jolly {
+	increase: "spd",
+	decrease: "spatk"
+	},
+	naive: {
+	increase: "spd",
+	decrease: "spdef"
+	},
+	modest: {
+	increase: "spatk",
+	decrease: "atk"
+	},
+	mild: {
+	increase: "spatk",
+	decrease: "def"
+	},
+	rash: {
+	increase: "spatk",
+	decrease: "spdef"
+	},
+	quiet: {
+	increase: "spatk",
+	decrease: "spd"
+	},
+	calm: {
+	increase: "spdef",
+	decrease: "atk"
+	},
+	gentle: {
+	increase: "spdef",
+	decrease: "def"
+	},
+	careful: {
+	increase: "spdef",
+	decrease: "spatk"
+	},
+	sassy: {
+	increase: "spdef",
+	decrease: "spd"
+	}
+}
