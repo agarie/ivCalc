@@ -15,133 +15,128 @@ Stat = (((2 * BaseStat + IV + (EV / 4)) * Level / 100 + 5) * Nature)
 
 //
 // natures is the object responsible for translating increases and decreases given the
-// nature's name. It also is a 
+// nature's name.
 //
-var natures = {};
+var natures = (function () {
+	var info = {
+		hardy: {
+		increase: "none",
+		decrease: "none"
+		},
+		docile: {
+		increase: "none",
+		decrease: "none"
+		},
+		serious: {
+		increase: "none",
+		decrease: "none"
+		},
+		bashful: {
+		increase: "none",
+		decrease: "none"
+		},
+		quirky: {
+		increase: "none",
+		decrease: "none"
+		},
+		lonely: {
+		increase: "atk",
+		decrease: "def"
+		},
+		adamant: {
+		increase: "atk",
+		decrease: "spatk"
+		},
+		naughty: {
+		increase: "atk",
+		decrease: "spdef"
+		},
+		brave: {
+		increase: "atk",
+		decrease: "spd"
+		},
+		bold: {
+		increase: "def",
+		decrease: "atk"
+		},
+		impish: {
+		increase: "def",
+		decrease: "spatk"
+		},
+		lax: {
+		increase: "def",
+		decrease: "spdef"
+		},
+		relaxed: {
+		increase: "def",
+		decrease: "spd"
+		},
+		timid: {
+		increase: "spd",
+		decrease: "atk"
+		},
+		hasty {
+		increase: "spd",
+		decrease: "def"
+		},
+		jolly {
+		increase: "spd",
+		decrease: "spatk"
+		},
+		naive: {
+		increase: "spd",
+		decrease: "spdef"
+		},
+		modest: {
+		increase: "spatk",
+		decrease: "atk"
+		},
+		mild: {
+		increase: "spatk",
+		decrease: "def"
+		},
+		rash: {
+		increase: "spatk",
+		decrease: "spdef"
+		},
+		quiet: {
+		increase: "spatk",
+		decrease: "spd"
+		},
+		calm: {
+		increase: "spdef",
+		decrease: "atk"
+		},
+		gentle: {
+		increase: "spdef",
+		decrease: "def"
+		},
+		careful: {
+		increase: "spdef",
+		decrease: "spatk"
+		},
+		sassy: {
+		increase: "spdef",
+		decrease: "spd"
+		}
+	};
 
-natures.info = {
-	hardy: {
-	increase: "none",
-	decrease: "none"
-	},
-	docile: {
-	increase: "none",
-	decrease: "none"
-	},
-	serious: {
-	increase: "none",
-	decrease: "none"
-	},
-	bashful: {
-	increase: "none",
-	decrease: "none"
-	},
-	quirky: {
-	increase: "none",
-	decrease: "none"
-	},
-	lonely: {
-	increase: "atk",
-	decrease: "def"
-	},
-	adamant: {
-	increase: "atk",
-	decrease: "spatk"
-	},
-	naughty: {
-	increase: "atk",
-	decrease: "spdef"
-	},
-	brave: {
-	increase: "atk",
-	decrease: "spd"
-	},
-	bold: {
-	increase: "def",
-	decrease: "atk"
-	},
-	impish: {
-	increase: "def",
-	decrease: "spatk"
-	},
-	lax: {
-	increase: "def",
-	decrease: "spdef"
-	},
-	relaxed: {
-	increase: "def",
-	decrease: "spd"
-	},
-	timid: {
-	increase: "spd",
-	decrease: "atk"
-	},
-	hasty {
-	increase: "spd",
-	decrease: "def"
-	},
-	jolly {
-	increase: "spd",
-	decrease: "spatk"
-	},
-	naive: {
-	increase: "spd",
-	decrease: "spdef"
-	},
-	modest: {
-	increase: "spatk",
-	decrease: "atk"
-	},
-	mild: {
-	increase: "spatk",
-	decrease: "def"
-	},
-	rash: {
-	increase: "spatk",
-	decrease: "spdef"
-	},
-	quiet: {
-	increase: "spatk",
-	decrease: "spd"
-	},
-	calm: {
-	increase: "spdef",
-	decrease: "atk"
-	},
-	gentle: {
-	increase: "spdef",
-	decrease: "def"
-	},
-	careful: {
-	increase: "spdef",
-	decrease: "spatk"
-	},
-	sassy: {
-	increase: "spdef",
-	decrease: "spd"
-	}
-};
+	var multiplier = function (nature, name) {
+		var multiplier = 1;
+		
+		if (info[nature].increase === name) {
+			multiplier = 1.1;
+		}
+		else if (info[nature].decrease === name) {
+			multiplier = 0.9;
+		}
+		
+		return multiplier;
+	};
 
-natures.multiplier = function (nature, name) {
-};
+})(); // natures
 
-var calcHp = function (stats) {
-	return (Math.floor(((stats.baseStat*2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 10 + stats.level);
-};
-
-//
-// name: atk, def, spd, spatk, spdef
-//
-var calcStat = function (stats, name) {
-	if (typeof name === "string") {
-		return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5) * natures.multiplier(stats.nature, name));
-	}
-	else {
-		return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5));
-	}
-};
-
-var ivCalc = function () {
+var ivCalc = (function () {
 	
 	//
 	// This function is the "inverse" of the HP calculation, which is a non-linear
@@ -187,7 +182,7 @@ var ivCalc = function () {
 	var statsIvCalc = function (stats, type) {
 		var possibleIvs = [],
 			evs = stats.evs || 0,
-			name = type ||
+			name = type;
 			i = 0;
 		
 		for (i = 0; i < 32; i += 1) {
@@ -200,4 +195,25 @@ var ivCalc = function () {
 		
 		return possibleIvs;
 	};
-};
+	
+	var calcHp = function (stats) {
+		return (Math.floor(((stats.baseStat*2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 10 + stats.level);
+	};
+
+	//
+	// name: atk, def, spd, spatk, spdef
+	//
+	var calcStat = function (stats, name) {
+		if (typeof name === "string") {
+			return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
+		}
+		else {
+			return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5);
+		}
+	};
+	
+	return {
+		hpIvCalc : hpIvCalc,
+		statsIvCalc : statsIvCalc
+	};
+})(); // ivCalc
