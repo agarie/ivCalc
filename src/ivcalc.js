@@ -75,11 +75,11 @@ var natures = (function () {
 		increase: "spd",
 		decrease: "atk"
 		},
-		hasty {
+		hasty: {
 		increase: "spd",
 		decrease: "def"
 		},
-		jolly {
+		jolly: {
 		increase: "spd",
 		decrease: "spatk"
 		},
