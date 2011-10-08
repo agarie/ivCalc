@@ -11,17 +11,15 @@ HP = ((2 * BaseStat + IV + (EV / 4)) * Level / 100 + Level + 10)
 HP - 10 - Level = (2 * BaseStat + IV + (EV / 4)) * Level / 100
 
 Stat = (((2 * BaseStat + IV + (EV / 4)) * Level / 100 + 5) * Nature)
-
-
-
 */
 
-// old functions --> reuse!
 //
-// stats: object that holds baseStat, iv, ev, level
+// natures is the object responsible for translating increases and decreases given the
+// nature's name. It also is a 
+//
+var natures = {};
 
-// Must decide where to store this object lol
-var natures = {
+natures.info = {
 	hardy: {
 	increase: "none",
 	decrease: "none"
@@ -124,30 +122,82 @@ var natures = {
 	}
 };
 
+natures.multiplier = function (nature, name) {
+};
+
+var calcHp = function (stats) {
+	return (Math.floor(((stats.baseStat*2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 10 + stats.level);
+};
+
+//
+// name: atk, def, spd, spatk, spdef
+//
+var calcStat = function (stats, name) {
+	if (typeof name === "string") {
+		return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5) * natures.multiplier(stats.nature, name));
+	}
+	else {
+		return (Math.floor(((stats.baseStat * 2 + stats.iv + Math.floor(stats.evs/4))*stats.level)/100) + 5));
+	}
+};
+
 var ivCalc = function () {
 	
+	//
 	// This function is the "inverse" of the HP calculation, which is a non-linear
 	// function itself. It returns an array with the possible IVs calculated.
-	// 
-	// I'm currently employing a very naive approach, so expect this to change soon. :)
-	//
-	// @PARAM: stats.hp, stats.baseStat, stats.ev (for the moment, it's considered zero) and stats.level
-	// @RETURN: possibleIvs = array with the possible values for the HP IV
-	var hpIvCalc = function (stats) {
-	// This is the formula for HP given base stats, ivs, evs and level	
 	// hp = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100)) + 10 + level
-	
+	// 
+	// A brute force method is being employed to find the IVs. We have a finite and very small set
+	// of possible IVs, so it's no big deal in performance - but I hope it won't be used in more complex
+	// programs.
+	//
+	// @PARAM: stats.hp, stats.baseStat, stats.evs and stats.level
+	// @RETURN: possibleIvs = array with the possible values for the HP IV
+	//
+	var hpIvCalc = function (stats) {
 		var possibleIvs = [],
-			evs = stats.evs || 0;
+			evs = stats.evs || 0,
+			i = 0;
 		
-		possibleIvs.push(Math.floor((100*(stats.hp - 10 - stats.level)/stats.level) - 2*stats.baseStats - evs/4));
+		for (i = 0; i < 32; i += 1) {
+			stats.iv = i;
+			
+			if (calcHp(stats) === stats.hp) {
+				possibleIvs.push(i);
+			}
+		}
 		
 		return possibleIvs;
 	};
 
-	var statsIvCalc = function (stats) {
-	// For the other stats...
-	// stat = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100) + 5) * nature);
+	//
+	// This function is the "inverse" of the HP calculation, which is a non-linear
+	// function itself. It returns an array with the possible IVs calculated.
+	// stat = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100) + 5) * nature)
+	// 
+	// A brute force method is being employed to find the IVs. We have a finite and very small set
+	// of possible IVs, so it's no big deal in performance - but I hope it won't be used in more complex
+	// programs.
+	//
+	// @PARAM: type (atk, def, etc), stats.value, stats.baseStatValue,
+	// stats.evs, stats.nature and stats.level
+	// @RETURN: possibleIvs = array with the possible values for the IV
+	//
+	var statsIvCalc = function (stats, type) {
+		var possibleIvs = [],
+			evs = stats.evs || 0,
+			name = type ||
+			i = 0;
+		
+		for (i = 0; i < 32; i += 1) {
+			stats.iv = i;
+			
+			if (calcStat(stats, name) === stats.value) {
+				possibleIvs.push(i);
+			}
+		}
+		
+		return possibleIvs;
 	};
-	
 };
