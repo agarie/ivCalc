@@ -4,45 +4,65 @@
 	<title>IV Calculator | by Carlos Agarie</title>
 </head>
 <body>
-	<p>This calculator is a simple approach to IV calculation. You need to input the base stats, level and current stats of your pokémon, along with the nature. If you don't input EVs, they'll considered 0.</p>
+	<p>This calculator is a simple approach to IV calculation. You need to input the base stats, level and current stats of your pokemon, along with the nature. We consider that the EVs are 0.</p>
 	<!-- I'll need every stat, level, EVs -->
 	<div id="parameters">
 		<form id="ivCalc">
 			<fieldset>
 				<legend>Parameters</legend>
-				
-				hardy
-				docile
-				serious
-				bashful
-				quirky
-				lonely
-				adamant
-				naughty
-				brave
-				bold
-				impish
-				lax
-				relaxed
-				timid
-				hasty
-				jolly
-				naive
-				modest
-				mild
-				rash
-				quiet
-				calm
-				gentle
-				careful
-				sassy
-				
+				<label for="level">Level:</label> <input type="text" name="level" value="1" /><br />
+				<label for="nature">Nature:</label>
+					<select name="nature">
+						<option value="Hardy">Hardy</option>
+						<option value="docile">Docile</option>
+						<option value="serious">Serious</option>
+						<option value="bashful">Bashful</option>
+						<option value="quirky">Quirky</option>
+						<option value="lonely">Lonely</option>
+						<option value="adamant">Adamant</option>
+						<option value="naughty">Naughty</option>
+						<option value="brave">Brave</option>
+						<option value="bold">Bold</option>
+						<option value="impish">Impish</option>
+						<option value="lax">Lax</option>
+						<option value="relaxed">Relaxed</option>
+						<option value="timid">Timid</option>
+						<option value="hasty">Hasty</option>
+						<option value="jolly">Jolly</option>
+						<option value="naive">Naive</option>
+						<option value="modest">Modest</option>
+						<option value="mild">Mild</option>
+						<option value="rash">Rash</option>
+						<option value="quiet">Quiet</option>
+						<option value="calm">Calm</option>
+						<option value="gentle">Gentle</option>
+						<option value="careful">Careful</option>
+						<option value="sassy">Sassy</option>
+				</select>
 			</fieldset>
 			
 			<fieldset>
-				<legend>Stats</legend>
+				<legend>Pokemon stats</legend>
+				<label for="hpBaseStat">Base HP:</label> <input type="text" name="hpBaseStat" />
+				<label for="hp">HP:</label> <input type="text" name="hp" /><br />
+				<label for="atkBaseStat">Base Atk:</label> <input type="text" name="atkBaseStat" />
+				<label for="atk">Atk:</label> <input type="text" name="atk" /><br />
+				<label for="defBaseStat">Base Def:</label> <input type="text" name="defBaseStat" />
+				<label for="def">Def:</label> <input type="text" name="def" /><br />
+				<label for="spdBaseStat">Base Spd:</label> <input type="text" name="spdBaseStat" />
+				<label for="spd">spd:</label> <input type="text" name="spd" /><br />
+				<label for="spatkBaseStat">Base Sp. Atk:</label> <input type="text" name="spatkBaseStat" />
+				<label for="spdef">Sp. Atk:</label> <input type="text" name="spatk" /><br />
+				<label for="spdefBaseStat">Base Sp. Def:</label> <input type="text" name="spdefBaseStat" />
+				<label for="spatk">Sp. Def:</label> <input type="text" name="spdef" /><br />
 			</fieldset>
 		</form>
+	</div>
+	
+	<div id="outputIvs">
+		<table>
+			<th>IV</th>
+			
 	</div>
 	
 	<script type="text/javascript" src="lib/jquery-1.6.2.min.js"></script>
