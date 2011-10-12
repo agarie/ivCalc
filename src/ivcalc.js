@@ -29,9 +29,18 @@ var interfaceView = (function () {
 		stats.level = $("#ivCalc input[name='level']").val() || 1;
 		stats.atk = $("#ivCalc select[name='nature']").val();
 		// stats & base stats
-		stats.def = $("#ivCalc input[name='']").val();
+		stats.hpBaseStat = $("#ivCalc input[name='hpBaseStat']").val();
 		stats.hp = $("#ivCalc input[name='hp']").val();
-		stats.basePower = $("#ivCalc input[name='basePower']").val();
+		stats.atkBaseStat = $("#ivCalc input[name='atkBaseStat']").val();
+		stats.atk = $("#ivCalc input[name='atk']").val();
+		stats.defBaseStat = $("#ivCalc input[name='defBaseStat']").val();
+		stats.def = $("#ivCalc input[name='def']").val();
+		stats.spdBaseStat = $("#ivCalc input[name='spdBaseStat']").val();
+		stats.spd = $("#ivCalc input[name='spd']").val();
+		stats.spatkBaseStat = $("#ivCalc input[name='spatkBaseStat']").val();
+		stats.spatk = $("#ivCalc input[name='spatk']").val();
+		stats.spdefBaseStat = $("#ivCalc input[name='spdefBaseStat']").val();
+		stats.spdef = $("#ivCalc input[name='spdef']").val();
 	};
 	
 	var getStats = function () {
@@ -61,8 +70,8 @@ var ivCalc = (function () {
 	// function itself. It returns an array with the possible IVs calculated.
 	// hp = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100)) + 10 + level
 	//
-	// @PARAM: stats.hp, stats.baseStat, stats.evs and stats.level
-	// @RETURN: possibleIvs = array with the possible values for the HP IV
+	// PARAM: stats.hp, stats.baseStat, stats.evs and stats.level
+	// RETURN: possibleIvs = array with the possible values for the HP IV
 	//
 	var hpIvCalc = function (stats) {
 		var possibleIvs = [],
@@ -84,9 +93,9 @@ var ivCalc = (function () {
 	// function itself. It returns an array with the possible IVs calculated.
 	// stat = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100) + 5) * nature)
 	// 
-	// @PARAM: type (atk, def, etc), stats.value, stats.baseStatValue,
+	// PARAM: type (atk, def, etc), stats.value, stats.baseStatValue,
 	// stats.evs, stats.nature and stats.level
-	// @RETURN: possibleIvs = array with the possible values for the IV
+	// RETURN: possibleIvs = array with the possible values for the IV
 	//
 	var statsIvCalc = function (stats, name) {
 		var possibleIvs = [],
