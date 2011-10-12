@@ -7,8 +7,7 @@
 </head>
 <body>
 	<p>This calculator is a simple approach to IV calculation. You need to input the base stats, level and current stats of your pokemon, along with the nature. We consider that the EVs are 0.</p>
-	<!-- I'll need every stat, level, EVs -->
-	<div id="parameters">
+
 		<form id="ivCalc">
 			<fieldset>
 				<legend>Parameters</legend>
@@ -40,7 +39,8 @@
 						<option value="gentle">Gentle</option>
 						<option value="careful">Careful</option>
 						<option value="sassy">Sassy</option>
-				</select>
+				</select><br />
+				<button type="button">CALCULATE</button>
 			</fieldset>
 			
 			<fieldset>
@@ -59,15 +59,26 @@
 				<label for="spatk">Sp. Def:</label> <input type="text" name="spdef" /><br />
 			</fieldset>
 		</form>
-	</div>
+	</div> <!-- ivCalc -->
 	
 	<div id="outputIvs">
 		<table>
 			<th>
 				<tr>IV</tr>
 			</th>
-			
-	</div>
+			<tr>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+			</tr>
+	</div> <!-- outputIvs -->
 	
 	<script type="text/javascript" src="lib/jquery-1.6.2.min.js"></script>
 	<script type="text/javascript" src="src/ivcalc.js"></script>

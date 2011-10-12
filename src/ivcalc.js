@@ -21,8 +21,29 @@
 // - spdefBaseStat
 //
 
-"use strict";
+var interfaceView = (function () {
+	var stats = {};
 
+	var setPokemonStats = function () {
+		// Get the parameters from the UI
+		stats.level = $("#ivCalc input[name='level']").val() || 1;
+		stats.atk = $("#ivCalc select[name='nature']").val();
+		// stats & base stats
+		stats.def = $("#ivCalc input[name='']").val();
+		stats.hp = $("#ivCalc input[name='hp']").val();
+		stats.basePower = $("#ivCalc input[name='basePower']").val();
+	};
+	
+	var getStats = function () {
+		return stats;
+	};
+	
+	return {
+		setPokemonStats : setPokemonStats,
+		getStats : getStats
+	};
+})();
+		
 //
 // A brute force method is being employed to find the IVs. We have a finite and very small set
 // of possible IVs, so it's no big deal in performance - but I hope it won't be used in more complex
@@ -34,7 +55,7 @@
 // with the string "name".
 //
 var ivCalc = (function () {
-	
+	"use strict";
 	//
 	// This function is the "inverse" of the HP calculation, which is a non-linear
 	// function itself. It returns an array with the possible IVs calculated.
