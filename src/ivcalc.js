@@ -163,10 +163,10 @@ var ivCalc = (function () {
 	//
 	var calcStat = function (stats, name) {
 		if (typeof name === "string" && name !== "hp") {
-			return (Math.floor(((stats[name + "BaseStat"] * 2 + stats.iv)*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
+			return Math.floor( ( Math.floor( ( ( stats[name + "BaseStat"] * 2 + stats.iv ) * stats.level ) /100 ) + 5 ) * natures.multiplier( stats.nature, name ) );
 		}
 		else if (typeof name === "string") {
-			return (Math.floor(((stats.hpBaseStat*2 + stats.iv)*stats.level)/100) + 10 + stats.level);
+			return Math.floor(Math.floor(((stats.hpBaseStat*2 + stats.iv)*stats.level)/100) + 10 + stats.level);
 		}
 		else {
 			return undefined;
