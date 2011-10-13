@@ -21,7 +21,8 @@
 // - spdefBaseStat
 //
 
-var interfaceView = (function () {
+var interfaceIO = (function () {
+	"use strict";
 	var stats = {};
 
 	var setPokemonStats = function () {
@@ -86,42 +87,21 @@ var interfaceView = (function () {
 // programs.
 //
 // Methods
-// ivCalc.hpIvCalc(stats) : Generates an array with the possible IVs for the HP stat.
-// ivCalc.statIvCalc(stats, name) : Generates an array with the possible IVs for the stat selected 
-// with the string "name".
+// generateRanges : Populates an internal results object with the correspoding IV ranges for the stats.
+// getResults : 
 //
 var ivCalc = (function () {
 	"use strict";
-	//
-	// This function is the "inverse" of the HP calculation, which is a non-linear
-	// function itself. It returns an array with the possible IVs calculated.
-	// hp = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100)) + 10 + level
-	//
-	// PARAM: stats.hp, stats.baseStat, stats.evs and stats.level
-	// RETURN: possibleIvs = array with the possible values for the HP IV
-	//
-	var hpIvCalc = function (stats) {
-		var possibleIvs = [],
-			i = 0;
-		
-		for (i = 0; i < 32; i += 1) {
-			stats.iv = i;
-			
-			if (calcHp(stats) === stats.hp) {
-				possibleIvs.push(i);
-			}
-		}
-		
-		return possibleIvs;
-	};
+	var results = {};
 
 	//
-	// This function is the "inverse" of the HP calculation, which is a non-linear
+	// This function is the "inverse" of the stat calculation, which is a non-linear
 	// function itself. It returns an array with the possible IVs calculated.
+	//
+	// hp = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100)) + 10 + level
 	// stat = (base_stat * 2 + iv + Math.floor(ev/4)) * (level/100) + 5) * nature)
 	// 
-	// PARAM: type (atk, def, etc), stats.value, stats.baseStatValue,
-	// stats.evs, stats.nature and stats.level
+	// PARAM: name ("atk", "def", etc) and stats (described at the beginning)
 	// RETURN: possibleIvs = array with the possible values for the IV
 	//
 	var statsIvCalc = function (stats, name) {
@@ -131,7 +111,7 @@ var ivCalc = (function () {
 		for (i = 0; i < 32; i += 1) {
 			stats.iv = i;
 			
-			if (calcStat(stats, name) === stats.value) {
+			if (calcStat(stats, name) === stats[name]) {
 				possibleIvs.push(i);
 			}
 		}
@@ -140,28 +120,44 @@ var ivCalc = (function () {
 	};
 	
 	//
-	// This function is a simple implementation of the HP calculation formula.
+	// Populates the results object with the IV ranges.
 	//
-	var calcHp = function (stats) {
-		return (Math.floor(((stats.baseStat*2 + stats.iv)*stats.level)/100) + 10 + stats.level);
+	var generateRanges = function (stats) {
+		results.range.hp = createRange(statsIvCalc(stats, "hp"));
+		results.range.atk = createRange(statsIvCalc(stats, "atk"));
+		results.range.def = createRange(statsIvCalc(stats, "def"));
+		results.range.spd = createRange(statsIvCalc(stats, "spd"));
+		results.range.spatk = createRange(statsIvCalc(stats, "spatk"));
+		results.range.spdef = createRange(statsIvCalc(stats, "spdef"));
 	};
-
+	
+	//
+	// Returns the results object. Must be called AFTER generateRanges!
+	//
+	var getResults = function () {
+		return results;
+	};
+	
 	//
 	// This function calculates the "name" stat using the parameters found in the stats object.
-	// If "name" is not specified, it WON'T CONSIDER THE NATURE!
+	// name MUST BE SETTED FOR IT TO WORK CORRECTLY.
 	//
 	var calcStat = function (stats, name) {
-		if (typeof name === "string") {
-			return (Math.floor(((stats.baseStat * 2 + stats.iv)*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
+		if (typeof name === "string" && name !== "hp") {
+			return (Math.floor(((stats[name + "baseStat"] * 2 + stats.iv)*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
+		}
+		else if (typeof name === "string") {
+			return (Math.floor(((stats.hpBaseStat*2 + stats.iv)*stats.level)/100) + 10 + stats.level);
 		}
 		else {
-			return (Math.floor(((stats.baseStat * 2 + stats.iv)*stats.level)/100) + 5);
+			console.log("ERROR (in ivCalc.calcStat): the name parameter must be a string.");
+			return undefined;
 		}
 	};
 	
 	return {
-		hpIvCalc : hpIvCalc,
-		statsIvCalc : statsIvCalc
+		generateRanges : generateRanges,
+		getResults : getResults
 	};
 })(); // ivCalc
 
@@ -309,3 +305,16 @@ var createRange = function (array) {
 	
 	return range;
 };
+
+$(document).ready(function () {
+	var _stats = {};
+	
+	// Gets the stuff from the UI
+	interfaceIO.setPokemonStats();
+	
+	_stats = interfaceIO.getStats();
+	
+	// IV calculations
+	ivCalc.generateRanges(_stats);
+	interfaceIO.showResultsOnUi(ivCalc.getResults());
+});
