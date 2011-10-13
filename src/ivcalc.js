@@ -27,21 +27,21 @@ var interfaceIO = (function () {
 
 	var setPokemonStats = function () {
 		// Get the parameters from the UI
-		stats.level = $("#ivCalc input[name='level']").val() || 1;
+		stats.level = parseFloat($("#ivCalc input[name='level']").val() || 1);
 		stats.nature = $("#ivCalc select[name='nature']").val();
 		// stats & base stats
-		stats.hpBaseStat = $("#ivCalc input[name='hpBaseStat']").val();
-		stats.hp = $("#ivCalc input[name='hp']").val();
-		stats.atkBaseStat = $("#ivCalc input[name='atkBaseStat']").val();
-		stats.atk = $("#ivCalc input[name='atk']").val();
-		stats.defBaseStat = $("#ivCalc input[name='defBaseStat']").val();
-		stats.def = $("#ivCalc input[name='def']").val();
-		stats.spdBaseStat = $("#ivCalc input[name='spdBaseStat']").val();
-		stats.spd = $("#ivCalc input[name='spd']").val();
-		stats.spatkBaseStat = $("#ivCalc input[name='spatkBaseStat']").val();
-		stats.spatk = $("#ivCalc input[name='spatk']").val();
-		stats.spdefBaseStat = $("#ivCalc input[name='spdefBaseStat']").val();
-		stats.spdef = $("#ivCalc input[name='spdef']").val();
+		stats.hpBaseStat = parseFloat($("#ivCalc input[name='hpBaseStat']").val());
+		stats.hp = parseFloat($("#ivCalc input[name='hp']").val());
+		stats.atkBaseStat = parseFloat($("#ivCalc input[name='atkBaseStat']").val());
+		stats.atk = parseFloat($("#ivCalc input[name='atk']").val());
+		stats.defBaseStat = parseFloat($("#ivCalc input[name='defBaseStat']").val());
+		stats.def = parseFloat($("#ivCalc input[name='def']").val());
+		stats.spdBaseStat = parseFloat($("#ivCalc input[name='spdBaseStat']").val());
+		stats.spd = parseFloat($("#ivCalc input[name='spd']").val());
+		stats.spatkBaseStat = parseFloat($("#ivCalc input[name='spatkBaseStat']").val());
+		stats.spatk = parseFloat($("#ivCalc input[name='spatk']").val());
+		stats.spdefBaseStat = parseFloat($("#ivCalc input[name='spdefBaseStat']").val());
+		stats.spdef = parseFloat($("#ivCalc input[name='spdef']").val());
 	};
 	
 	var getStats = function () {
@@ -111,11 +111,21 @@ var ivCalc = (function () {
 		for (i = 0; i < 32; i += 1) {
 			stats.iv = i;
 			
+			console.log(calcStat(stats, name));
+			console.log(stats[name]);
+			
 			if (calcStat(stats, name) === stats[name]) {
 				possibleIvs.push(i);
 			}
 		}
 		
+		if (possibleIvs.length < 1) {
+			console.log("ERROR: Impossible base stat / stat combination for " + name);
+			
+			//test
+			possibleIvs = [1,1];
+		}
+
 		return possibleIvs;
 	};
 	
@@ -123,12 +133,25 @@ var ivCalc = (function () {
 	// Populates the results object with the IV ranges.
 	//
 	var generateRanges = function (stats) {
-		results.range.hp = createRange(statsIvCalc(stats, "hp"));
-		results.range.atk = createRange(statsIvCalc(stats, "atk"));
-		results.range.def = createRange(statsIvCalc(stats, "def"));
-		results.range.spd = createRange(statsIvCalc(stats, "spd"));
-		results.range.spatk = createRange(statsIvCalc(stats, "spatk"));
-		results.range.spdef = createRange(statsIvCalc(stats, "spdef"));
+		var array = [];
+		
+		array = statsIvCalc(stats, "hp");
+		results.range.hp = createRange(array);
+		
+		array = statsIvCalc(stats, "atk");
+		results.range.atk = createRange(array);
+		
+		array = statsIvCalc(stats, "def");
+		results.range.def = createRange(array);
+		
+		array = statsIvCalc(stats, "spd");
+		results.range.spd = createRange(array);
+		
+		array = statsIvCalc(stats, "spatk");
+		results.range.spatk = createRange(array);
+		
+		array = statsIvCalc(stats, "spdef");
+		results.range.spdef = createRange(array);
 	};
 	
 	//
@@ -307,14 +330,16 @@ var createRange = function (array) {
 };
 
 $(document).ready(function () {
-	var _stats = {};
-	
-	// Gets the stuff from the UI
-	interfaceIO.setPokemonStats();
-	
-	_stats = interfaceIO.getStats();
-	
-	// IV calculations
-	ivCalc.generateRanges(_stats);
-	interfaceIO.showResultsOnUi(ivCalc.getResults());
+	$("#ivCalc :button").click(function () {
+		var _stats = {};
+
+		// Gets the stuff from the UI
+		interfaceIO.setPokemonStats();
+
+		_stats = interfaceIO.getStats();
+
+		// IV calculations
+		ivCalc.generateRanges(_stats);
+		interfaceIO.showResultsOnUi(ivCalc.getResults());
+	});
 });
