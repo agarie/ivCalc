@@ -27,7 +27,7 @@ var interfaceView = (function () {
 	var setPokemonStats = function () {
 		// Get the parameters from the UI
 		stats.level = $("#ivCalc input[name='level']").val() || 1;
-		stats.atk = $("#ivCalc select[name='nature']").val();
+		stats.nature = $("#ivCalc select[name='nature']").val();
 		// stats & base stats
 		stats.hpBaseStat = $("#ivCalc input[name='hpBaseStat']").val();
 		stats.hp = $("#ivCalc input[name='hp']").val();
@@ -47,9 +47,36 @@ var interfaceView = (function () {
 		return stats;
 	};
 	
+	//
+	// This function receives a results object as a parameter and creates at the UI
+	// a table with the resulting IV ranges.
+	//
+	// results must have the attributes range.hp, range.atk, ... range.spdef.
+	//
+	var showResultsOnUi = function (results) {
+		var outputTable = "";
+	
+		// Must clean the previous calculation's output
+		//
+		// Hide the div to avoid excessive repaints.
+		//
+		$("#outputIvs").empty().hide();
+
+		outputTable += "<span>IV Ranges</span>";
+		outputTable += "<table class=\"outputTable\"><tr>" + results.range.hp + "</tr>";
+		outputTable += "<tr>" + results.range.atk + "</tr>";
+		outputTable += "<tr>" + results.range.def + "</tr>";
+		outputTable += "<tr>" + results.range.spd + "</tr>";
+		outputTable += "<tr>" + results.range.spatk + "</tr>";
+		outputTable += "<tr>" + results.range.spdef + "</tr>";
+
+		$("#outputIvs").append(outputTable).show();
+	};
+	
 	return {
 		setPokemonStats : setPokemonStats,
-		getStats : getStats
+		getStats : getStats,
+		showResultsOnUi : showResultsOnUi
 	};
 })();
 		
@@ -250,6 +277,10 @@ var natures = (function () {
 		}
 	};
 
+	//
+	// Responsible for generating multipliers based on the stat and the nature.
+	// If the nature ISN'T specified, it will return 1.
+	//
 	var multiplier = function (nature, name) {
 		var multiplier = 1;
 		
@@ -264,3 +295,17 @@ var natures = (function () {
 	};
 
 })(); // natures
+
+//
+// createRange takes an array input and returns a string representing the array's range
+// in a "FIRST - LAST" format.
+//
+var createRange = function (array) {
+	var range = "";
+	
+	range += array[0].toString();
+	range += " - ";
+	range += array[array.length - 1].toString();
+	
+	return range;
+};
