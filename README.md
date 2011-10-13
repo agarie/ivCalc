@@ -1,9 +1,9 @@
-ivCalc
-Author: Carlos Agarie
-Author URL: www.onox.com.br
-Project URL: www.github.com/agarie/ivcalc
-Version: 0.4
-License: MIT License 
+ivCalc  
+Author: Carlos Agarie  
+Author URL: www.onox.com.br  
+Project URL: www.github.com/agarie/ivcalc  
+Version: 0.4  
+License: MIT License   
 
 INTRODUCTION
 ============
