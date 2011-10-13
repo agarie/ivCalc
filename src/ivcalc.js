@@ -135,6 +135,8 @@ var ivCalc = (function () {
 	var generateRanges = function (stats) {
 		var array = [];
 		
+		results.range = {};
+		
 		array = statsIvCalc(stats, "hp");
 		results.range.hp = createRange(array);
 		
@@ -304,15 +306,18 @@ var natures = (function () {
 		var multiplier = 1;
 		
 		if (info[nature].increase === name) {
-			multiplier = 1.1;
+			multiplier = parseFloat(1.1);
 		}
 		else if (info[nature].decrease === name) {
-			multiplier = 0.9;
+			multiplier = parseFloat(0.9);
 		}
 		
 		return multiplier;
 	};
-
+	
+	return {
+		multiplier : multiplier
+	};
 })(); // natures
 
 //
