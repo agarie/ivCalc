@@ -28,7 +28,7 @@ var interfaceIO = (function () {
 	var setPokemonStats = function () {
 		// Get the parameters from the UI
 		stats.level = parseFloat($("#ivCalc input[name='level']").val() || 1);
-		stats.nature = $("#ivCalc select[name='nature']").val();
+		stats.nature = ($("#ivCalc select[name='nature']").val()).toLowerCase();
 		// stats & base stats
 		stats.hpBaseStat = parseFloat($("#ivCalc input[name='hpBaseStat']").val());
 		stats.hp = parseFloat($("#ivCalc input[name='hp']").val());
@@ -110,10 +110,7 @@ var ivCalc = (function () {
 		
 		for (i = 0; i < 32; i += 1) {
 			stats.iv = i;
-			
-			console.log(calcStat(stats, name));
-			console.log(stats[name]);
-			
+
 			if (calcStat(stats, name) === stats[name]) {
 				possibleIvs.push(i);
 			}
@@ -121,9 +118,6 @@ var ivCalc = (function () {
 		
 		if (possibleIvs.length < 1) {
 			console.log("ERROR: Impossible base stat / stat combination for " + name);
-			
-			//test
-			possibleIvs = [1,1];
 		}
 
 		return possibleIvs;
@@ -169,18 +163,19 @@ var ivCalc = (function () {
 	//
 	var calcStat = function (stats, name) {
 		if (typeof name === "string" && name !== "hp") {
-			return (Math.floor(((stats[name + "baseStat"] * 2 + stats.iv)*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
+			return (Math.floor(((stats[name + "BaseStat"] * 2 + stats.iv)*stats.level)/100) + 5) * natures.multiplier(stats.nature, name);
 		}
 		else if (typeof name === "string") {
 			return (Math.floor(((stats.hpBaseStat*2 + stats.iv)*stats.level)/100) + 10 + stats.level);
 		}
 		else {
-			console.log("ERROR (in ivCalc.calcStat): the name parameter must be a string.");
 			return undefined;
 		}
 	};
 	
 	return {
+		calcStat : calcStat,
+		statsIvCalc : statsIvCalc,
 		generateRanges : generateRanges,
 		getResults : getResults
 	};
