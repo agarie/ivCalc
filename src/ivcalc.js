@@ -64,12 +64,13 @@ var interfaceIO = (function () {
 		$("#outputIvs").empty().hide();
 
 		outputTable += "<span>IV Ranges</span>";
-		outputTable += "<table class=\"outputTable\"><tr>" + results.range.hp + "</tr>";
-		outputTable += "<tr>" + results.range.atk + "</tr>";
-		outputTable += "<tr>" + results.range.def + "</tr>";
-		outputTable += "<tr>" + results.range.spd + "</tr>";
-		outputTable += "<tr>" + results.range.spatk + "</tr>";
-		outputTable += "<tr>" + results.range.spdef + "</tr>";
+		outputTable += "<table class=\"outputTable\"><tr><td>" + results.range.hp + "</td></tr>";
+		outputTable += "<tr><td>" + results.range.atk + "</td></tr>";
+		outputTable += "<tr><td>" + results.range.def + "</td></tr>";
+		outputTable += "<tr><td>" + results.range.spd + "</td></tr>";
+		outputTable += "<tr><td>" + results.range.spatk + "</td></tr>";
+		outputTable += "<tr><td>" + results.range.spdef + "</td></tr>";
+		outputTable += "</table>";
 
 		$("#outputIvs").append(outputTable).show();
 	};
