@@ -330,17 +330,29 @@ var createRange = function (array) {
 	return range;
 };
 
+function calculation () {
+	var _stats = {};
+
+	// Gets the stuff from the UI
+	interfaceIO.setPokemonStats();
+
+	_stats = interfaceIO.getStats();
+
+	// IV calculations
+	ivCalc.generateRanges(_stats);
+	interfaceIO.showResultsOnUi(ivCalc.getResults());
+};
+
+$("#ivCalc :button").click(onCalculationKeydown);
+
+var onCalculationKeydown = function (event) {
+	if (event.keyCode === 32 || event.keyCode === 13) {
+		calculation();
+		console.log("LOL");
+	}
+}
+
 $(document).ready(function () {
-	$("#ivCalc :button").click(function () {
-		var _stats = {};
-
-		// Gets the stuff from the UI
-		interfaceIO.setPokemonStats();
-
-		_stats = interfaceIO.getStats();
-
-		// IV calculations
-		ivCalc.generateRanges(_stats);
-		interfaceIO.showResultsOnUi(ivCalc.getResults());
-	});
+	$("#ivCalc :button").click(calculation)
+	$("#ivCalc :button").click(onCalculationKeydown);
 });
